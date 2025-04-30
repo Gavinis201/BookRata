@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import './App.css'
-import BookList from './components/bookList'
+import BookList from './components/BookList'
 
 function App() {
 

@@ -9,7 +9,7 @@ const BookList = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/Book/JoinedRatings");
+        const response = await fetch("https://localhost:5000/Book/JoinedRatings");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
