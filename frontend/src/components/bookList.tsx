@@ -29,8 +29,22 @@ const BookList = () => {
       {books.map((book) => (
         <div key={book.bookId}>
           <h2>{book.title}</h2>
-          <p>Language Tier: {book.languageTier}</p>
-          {/* Add other ratings as needed */}
+          <p><strong>Book Summary: </strong>{book.bookSummary}</p>
+          <p><strong>Language Tier:</strong> {book.languageTier}</p>
+          <p><strong>Language Reasoning:</strong> {book.languageReasoning}</p>
+          <p><strong>Sex Tier:</strong> {book.sexTier}</p>
+          <p><strong>Sex Reasoning:</strong> {book.sexReasoning}</p>
+          <p><strong>Violence Tier:</strong> {book.violenceTier}</p>
+          <p><strong>Violence Reasoning:</strong> {book.violenceReasoning}</p>
+          <p><strong>Health Tier:</strong> {book.healthTier}</p>
+          <p><strong>Health Reasoning:</strong> {book.healthReasoning}</p>
+          <p><strong>Religion Tier:</strong> {book.religionTier}</p>
+          <p><strong>Religion Reasoning:</strong> {book.religionReasoning}</p>
+          <p><strong>LGBTQ Tier:</strong> {book.lgbtqTier}</p>
+          <p><strong>LGBTQ Reasoning:</strong> {book.lgbtqReasoning}</p>
+          <p><strong>Publish Date:</strong> {book.publishDate}</p>
+          <hr />
+          
         </div>
       ))}
     </div>

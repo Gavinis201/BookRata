@@ -31,5 +31,6 @@ namespace BookRata.Models
 
         public string? LGBTQTier { get; set; }
         public string? LGBTQReasoning { get; set; }
+        public DateOnly? PublishDate { get; set; }
     }
 }

@@ -52,6 +52,7 @@ public IActionResult GetBooksWithJoinedRatings()
                                 BookSummary = b.BookSummary,
                                 OverallTier = b.OverallTier,
                                 ReviewDate = b.ReviewDate,
+                                PublishDate = b.PublishDate,
 
                                 OverallSynopsis = bs.OverallSynopsis,
 
