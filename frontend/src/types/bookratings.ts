@@ -1,4 +1,4 @@
-// bookratings.ts
+
 export interface BookWithRatings {
     bookId: number;
     title: string;

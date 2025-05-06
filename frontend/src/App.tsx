@@ -1,11 +1,23 @@
 import './App.css'
-import BookList from './components/bookList'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import LoginPage from './pages/LoginPage'
+import LandingPage from './pages/landingPage'
 
 function App() {
 
   return (
     <>
-     <BookList />
+     <Header />
+     <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        {/* <Route path="/books" element={<BookList />} /> */}
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+     </Router>
+     <Footer />
     </>
   )
 }

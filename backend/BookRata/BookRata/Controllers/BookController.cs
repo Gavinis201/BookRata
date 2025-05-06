@@ -46,7 +46,6 @@ public IActionResult GetBooksWithJoinedRatings()
                                 BookId = b.BookId,
                                 Title = b.Title,
                                 Author = b.Author,
-                                Genre = b.Genre,
                                 ISBN = b.ISBN,
                                 TextUrl = b.TextUrl,
                                 BookSummary = b.BookSummary,

@@ -62,7 +62,6 @@ public partial class BookRataDBContext : DbContext
 
             entity.Property(e => e.Author).HasMaxLength(255);
             entity.Property(e => e.BookSummary).HasColumnType("text");
-            entity.Property(e => e.Genre).HasMaxLength(100);
             entity.Property(e => e.ISBN).HasMaxLength(20);
             entity.Property(e => e.OverallTier).HasMaxLength(10);
             entity.Property(e => e.TextUrl).HasMaxLength(255);
