@@ -1,0 +1,132 @@
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 1rem 0;
+  
+}
+
+.filter-input, .filter-select {
+  padding: 0.4em 2em;
+  border: none;
+  border-radius: 4px;
+  font-size: .75rem;
+  height: 2.5em;
+  min-width: 10em;
+  box-sizing: border-box;
+}
+.filter-input, .filter-select::placeholder {
+  color: var(--BookRataNew-color);
+  opacity: 90%;
+}
+
+.filter-input:focus, .filter-select:focus {
+  outline: none;
+  border: none;
+  box-shadow: 0 0 5px rgba(10, 69, 59, 0.2);
+}
+
+.filter-btn {
+  background: #0A453B;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0 1em;
+  font-size: .8rem;
+  height: 2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+
+.filter-btn:hover {
+  background: #0e5349;
+}
+
+.filter-btn i {
+  font-size: 1em;
+}
+
+.tag-autocomplete-wrapper {
+  position: relative;
+  padding-top: 1em;
+
+}
+
+.tag-dropdown {
+  position: absolute;
+  top: 70%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: none;
+  z-index: 10;
+  max-height: 180px;
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 2px 8px rgba(10, 69, 59, 0.08);
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+}
+
+.tag-dropdown li {
+  padding: 0.5em 1em;
+  cursor: pointer;
+  color: #0A453B;
+  font-size: .75rem;
+  transition: background 0.15s;
+}
+
+.tag-dropdown li:hover {
+  background: #e5e6e0;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 0.3em;
+  margin-bottom: 0.2em;
+}
+
+.tag-chip {
+  background: #0A453B;
+  color: #fff;
+  border-radius: 16px;
+  padding: 0.2em 0.8em 0.2em 0.8em;
+  font-size: 0.95em;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.remove-tag {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.1em;
+  margin-left: 0.2em;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.remove-tag:hover {
+  color: #F44336;
+}
+
+@media (max-width: 700px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7em;
+  }
+  .tag-autocomplete-wrapper,
+  .filter-input,
+  .filter-btn {
+    width: 100%;
+    min-width: 0;
+  }
+}

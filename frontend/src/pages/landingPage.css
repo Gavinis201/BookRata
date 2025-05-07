@@ -2,7 +2,7 @@
     --BookRataNew-color: #0A453B;
     --BookRataNew-buttonHover: #0e5349;
     --Primary: #FAF8F5;
-    --Navbar: #E5E6E0;
+    --Navbar: #d6d8cb;
     --Tier-5: black;
     --Tier-4: #F44336;  
     --Tier-3: #F4A623;
@@ -11,7 +11,7 @@
 }
 
 .landing-page-bg {
-  min-height: 120vh;
+  min-height: 100vh;
   min-width: 100vw;
   background-image: url('/LandingPageBackgrond.jpeg');
   background-size: cover;
@@ -26,23 +26,27 @@
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
-  padding-top: 10vh;
+  padding-top: 7vh;
   padding-left: 4vw;
   max-width: 900px;
 }
 .landing-content h1 {
   font-size: 2.5rem;
+  font-weight: bolder;
   color: var(--BookRataNew-color);
 }
 .landing-content h4 {
-    color: var(--BookRataNew-color);
-  }
+  color: var(--BookRataNew-color);
+}
+h5{
+  margin-bottom: 0px !important;
+}
 
 .input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+  padding: 8px 10px;
+  margin-bottom: 25px;
+  border-radius: 4px 0 0 4px ;
   max-width: 500px;
   border: none;
 }
@@ -54,11 +58,12 @@
 .free-trial {
   background-color: var(--BookRataNew-color);
   color: white;
-  padding: 5px;
+  padding: 5px 10px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 0 4px 4px 0;
   font-size: 1rem;
   border : none;
+  height: 2.5em;
   width: 7em;
   font-weight: 400;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -67,4 +72,21 @@
     background-color: var(--BookRataNew-buttonHover);
     color: white;
     
-  }
+}
+.learn-more {
+  background-color: var(--Navbar);
+  border: 1px solid var(--BookRataNew-color);
+  color: var(--BookRataNew-color);
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 7em;
+  font-weight: 400;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+.learn-more:hover {
+    background-color: var(--BookRataNew-buttonHover);
+    color: white;
+    
+}

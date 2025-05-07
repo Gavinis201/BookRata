@@ -20,7 +20,7 @@
 }
 
 .login-container {
-  background: #FAF8F5;
+    background-color: rgba(250, 248, 245, 0.9); /* 0.8 = 80% opaque */
   border-radius: 6px;
   box-shadow: 0 4px 32px rgba(0,0,0,0.10);
   display: flex;
@@ -41,7 +41,6 @@
 }
 
 
-
 .login-title {
   font-size: 1.3rem;
   font-weight: bold;
@@ -56,14 +55,22 @@
 }
 
 .login-input {
-  border: 2px solid #0A453B;
-  border-radius: 4px;
-  padding: .7em;
-  margin-bottom: 1.5rem;
+  border: 1px solid #0A453B;
+  border-radius: 2px;
+  padding: .5em;
+  margin-bottom: 1.3rem;
   font-size: .8rem;
   outline: none;
-  background-color: var(--Primary);
 }
+.login-input:focus {
+  border-color: var(--BookRataNew-color);
+  box-shadow: 0 0 2px rgba(10, 69, 59, 0.5);
+}
+input::placeholder {
+    color: var(--BookRataNew-color); /* light gray */
+    opacity: 1;  /* optional: make sure it's not faded */
+  }
+  
 
 .login-btn {
   background: #0A453B;
@@ -71,10 +78,9 @@
   border: none;
   border-radius: 8px;
   padding: .4em;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 400;
   cursor: pointer;
-  margin-top: 0.5rem;
   transition: background 0.2s;
 }
 
@@ -90,22 +96,28 @@
   color: #0A453B;
 }
 
-
-
 .login-link {
-  color: #0A453B;
-  text-decoration: underline;
-  cursor: pointer;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
+    color: #0A453B;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    font-size: .9rem;
+    font-weight: 500;
+    transition: text-decoration 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+  
+.login-link:hover {
+    text-decoration: underline;
+    color: var(--BookRataNew-color);
+
 }
 
 .login-signup {
     margin-top: 5em;
     color: var(--BookRataNew-color);
-  font-size: 1rem;
+  font-size: .8rem;
   margin-bottom: 0px;
-    font-weight: 600;
+    font-weight: 400;
 }
   
 .vertical-line {

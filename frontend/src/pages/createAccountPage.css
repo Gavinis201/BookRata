@@ -1,0 +1,149 @@
+:root{
+    --BookRataNew-color: #0A453B;
+    --BookRataNew-buttonHover: #0e5349;
+    --Primary: #FAF8F5;
+    --Navbar: #E5E6E0;
+    --Tier-5: black;
+    --Tier-4: #F44336;  
+    --Tier-3: #F4A623;
+    --Tier-2: #FFF176;
+    --Tier-1: #2E7D32;
+}
+
+.create-account-bg {
+  min-height: 100vh;
+  min-width: 100vw;
+  background: url('/LibraryBackground.jpeg') center center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-account-container {
+  background: rgba(250, 248, 245, 0.93);
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  width: 500px;
+  max-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(250, 248, 245, 0.9); /* 0.8 = 80% opaque */
+  border-radius: 6px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  width: 500px;
+  max-width: 70vw;
+  margin-top: -10vh;
+  overflow: hidden;
+  padding: 1rem;
+}
+
+
+.create-container h3 {
+    color: var(--BookRataNew-color);
+  }
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.create-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #0A453B;
+  margin-bottom: 2rem;
+}
+
+.create-input {
+  border: 1px solid #0A453B;
+  border-radius: 2px;
+  padding: .6em;
+  margin-bottom: 1.5rem;
+  font-size: .8rem;
+  outline: none;
+  width: 60%;
+}
+.create-input:focus {
+  border-color: var(--BookRataNew-color);
+  box-shadow: 0 0 2px rgba(10, 69, 59, 0.5);
+}
+input::placeholder {
+    color: var(--BookRataNew-color); /* light gray */
+    opacity: 1;  /* optional: make sure it's not faded */
+  }
+  
+
+.continue-btn {
+  background: #0A453B;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: .4em;
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+  width: 60%;
+}
+
+.continue-btn:hover {
+  background: var(--BookRataNew-buttonHover);
+}
+
+a{
+    color: var(--BookRataNew-color);
+    text-decoration: none;
+    font-size: .9rem;
+    margin-top: -.5rem;
+}
+a:hover{
+    text-decoration: underline;
+}
+
+hr {
+  width: 50%;
+  border: 5px solid var(--BookRataNew-color);
+  opacity: 70%;
+  border: none;
+  margin: 0px;
+color: var(--BookRataNew-color);
+
+}
+.policy {
+  font-size: .8rem;
+  color: var(--BookRataNew-color);
+  margin-top: 1rem;
+  text-align: center;
+  max-width: 60%;
+}
+
+.policy a {
+  color: var(--BookRataNew-color);
+  text-decoration: none;
+  font-size: .8rem;
+  font-weight: 600;
+}
+.policy a:hover {
+    color: var(--BookRataNew-color);
+    text-decoration: underline;
+    font-size: .8rem;
+  }
+
+.signin {
+  font-size: .8rem;
+  color: var(--BookRataNew-color);
+  text-align: center;
+  max-width: 60%;
+  text-decoration: none;
+}
