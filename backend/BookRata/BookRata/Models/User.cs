@@ -25,5 +25,4 @@ public partial class User
 
     public virtual Role? Role { get; set; }
 
-    public virtual ICollection<SynopsisReview> SynopsisReviews { get; set; } = new List<SynopsisReview>();
 }

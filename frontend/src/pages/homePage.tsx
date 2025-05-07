@@ -1,6 +1,7 @@
 import React from 'react';  
 import './homePage.css'; // Assuming you have a CSS file for styling    
 import BookFilters from '../components/BookFilters';
+import BookList from '../components/bookList';
 
 function HomePage() {
     
@@ -11,7 +12,7 @@ function HomePage() {
                 <BookFilters />
             </div>
             <div className="books-container">
-            <h1>Welcome</h1>
+            <BookList />
             </div>
             
         </div>

@@ -2,6 +2,8 @@
 export interface BookWithRatings {
     bookId: number;
     title: string;
+    overallTier?: string | number; // Added overallTier property
+    author: string;
     languageTier: string;
     languageReasoning: string;
     sexTier: string;

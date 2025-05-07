@@ -15,5 +15,4 @@ public partial class BookSynopsis
     [JsonIgnore]
     public virtual Book? Book { get; set; }
 
-    public virtual ICollection<SynopsisReview> SynopsisReviews { get; set; } = new List<SynopsisReview>();
 }

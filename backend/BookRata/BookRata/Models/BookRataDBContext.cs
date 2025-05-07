@@ -32,7 +32,6 @@ public partial class BookRataDBContext : DbContext
 
     public virtual DbSet<SwearWord> SwearWords { get; set; }
 
-    public virtual DbSet<SynopsisReview> SynopsisReviews { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -188,22 +187,6 @@ public partial class BookRataDBContext : DbContext
             entity.Property(e => e.Word).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<SynopsisReview>(entity =>
-        {
-            entity.HasKey(e => e.SynopsisReviewId).HasName("PRIMARY");
-
-            entity.HasIndex(e => e.SynopsisId, "SynopsisId");
-
-            entity.HasIndex(e => e.UserId, "UserId");
-
-            entity.HasOne(d => d.Synopsis).WithMany(p => p.SynopsisReviews)
-                .HasForeignKey(d => d.SynopsisId)
-                .HasConstraintName("synopsisreviews_ibfk_1");
-
-            entity.HasOne(d => d.User).WithMany(p => p.SynopsisReviews)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("synopsisreviews_ibfk_2");
-        });
 
         modelBuilder.Entity<User>(entity =>
         {

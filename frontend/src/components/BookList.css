@@ -1,0 +1,76 @@
+:root{
+  --BookRataNew-color: #0A453B;
+  --BookRataNew-buttonHover: #0e5349;
+  --Primary: #FAF8F5;
+  --Navbar: #d6d8cb;
+  --Tier-5: black;
+  --Tier-4: #F44336;  
+  --Tier-3: #F4A623;
+  --Tier-2: #FFF176;
+  --Tier-1: #2E7D32;
+  --FilterSidebar: #E5E6DF;
+}
+.book-list {
+  width: 100%;
+}
+
+.tier-heading {
+  margin:  1rem 1rem 0.5rem;
+  color: #0A453B;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.book-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  width: 160px;
+  height: 250px;
+  padding: 0.7em 0.7em 1em 0.7em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.tier-badge {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: var(--BookRataNew-color);
+  font-size: 0.8em;
+  font-weight: 400;
+  border-radius:  0 0 4px 0;
+  padding: 0.2em 0.7em;
+  z-index: 2;
+}
+
+.book-cover {
+  width: 70%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 0.7em;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.book-title {
+  font-weight: 600;
+  font-size: .8em;
+  margin-bottom: 0.2em;
+  text-align: center;
+}
+
+.book-author {
+  font-size: 0.95em;
+  color: #555;
+  text-align: center;
+  margin-top: auto;
+} 
