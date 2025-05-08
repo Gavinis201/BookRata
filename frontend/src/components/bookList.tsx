@@ -4,11 +4,11 @@ import "./BookList.css";
 import { useNavigate } from "react-router-dom";
 
 const TIER_COLORS: Record<string, string> = {
-  '1': '#2E7D32', // green
-  '2': '#FFF176', // yellow/orange
-  '3': '#F4A623', // red
+  '1': '#2E7D32', 
+  '2': '#FFF176', 
+  '3': '#F4A623', 
   '4': '#F44336',
-  '5': '#black',
+  '5': '#000000',
   'Other': '#888',
 };
 
@@ -67,6 +67,7 @@ const BookList = () => {
                   />
                   <div className="book-title">{book.title}</div>
                   <div className="book-author">{book.author}</div>
+                  <a href="">View Rating</a>
                 </div>
               );
             })}

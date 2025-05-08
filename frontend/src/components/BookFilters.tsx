@@ -5,10 +5,30 @@ const TAG_OPTIONS = [
   "Fiction", "Nonfiction", "Mystery", "Romance", "Fantasy", "Biography", "History", "Science", "Children", "Young Adult"
 ];
 
+const TIER_OPTIONS = [1, 2, 3, 4, 5];
+const CATEGORY_FILTERS = [
+  { key: 'language', label: 'Language' },
+  { key: 'sexuality', label: 'Sexuality' },
+  { key: 'violence', label: 'Violence' },
+  { key: 'drugs', label: 'Drugs' },
+  { key: 'lgbtq', label: 'LGBTQ+' },
+  { key: 'religion', label: 'Religion' },
+];
+
 function BookFilters() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const [overallTier, setOverallTier] = useState<'Any' | number>('Any');
+  const [categoryTiers, setCategoryTiers] = useState<Record<string, 'Any' | number>>({
+    language: 'Any',
+    sexuality: 'Any',
+    violence: 'Any',
+    drugs: 'Any',
+    lgbtq: 'Any',
+    religion: 'Any',
+  });
 
   // Filter tags based on input and not already selected
   const filteredTags = TAG_OPTIONS.filter(
@@ -34,43 +54,89 @@ function BookFilters() {
     setSelectedTags(selectedTags.filter(t => t !== tag));
   };
 
+  const handleCategoryTier = (cat: string, value: 'Any' | number) => {
+    setCategoryTiers(prev => ({ ...prev, [cat]: value }));
+  };
+
   return (
-    
-    <form className="filter-container" autoComplete="off">
-      <input className="filter-input" type="text" placeholder="Title" />
-      <input className="filter-input" type="text" placeholder="Author" />
-      <div className="tag-autocomplete-wrapper">
-        <input
-          className="filter-input"
-          type="text"
-          placeholder="Search tags"
-          value={tagInput}
-          onChange={handleTagInputChange}
-          onFocus={() => setShowDropdown(!!tagInput)}
-          onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
-        />
-        {showDropdown && filteredTags.length > 0 && (
-          <ul className="tag-dropdown">
-            {filteredTags.map(tag => (
-              <li key={tag} onClick={() => handleTagSelect(tag)}>
+    <>
+      <form className="book-filters-form" autoComplete="off">
+        <p className='filter-label'>Advanced Filter</p>
+        <input className="filter-input" type="text" placeholder="Author" />
+        <div className="tag-autocomplete-wrapper">
+          <input
+            className="filter-input"
+            type="text"
+            placeholder="Search tags"
+            value={tagInput}
+            onChange={handleTagInputChange}
+            onFocus={() => setShowDropdown(!!tagInput)}
+            onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+          />
+          {showDropdown && filteredTags.length > 0 && (
+            <ul className="tag-dropdown">
+              {filteredTags.map(tag => (
+                <li key={tag} onClick={() => handleTagSelect(tag)}>
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="selected-tags">
+            {selectedTags.map(tag => (
+              <span className="tag-chip" key={tag}>
                 {tag}
-              </li>
+                <button className="remove-tag" onClick={() => removeTag(tag)}>&times;</button>
+              </span>
             ))}
-          </ul>
-        )}
-        <div className="selected-tags">
-          {selectedTags.map(tag => (
-            <span className="tag-chip" key={tag}>
-              {tag}
-              <button className="remove-tag" onClick={() => removeTag(tag)}>&times;</button>
-            </span>
+          </div>
+        </div>
+        <button className="filter-btn d-flex justify-content-center align-items-center" type="submit">
+          <i className="fas fa-search"></i> Search
+        </button>
+      </form>
+
+      <div className="sidebar-filters">
+        <div className="filter-section">
+          <div className="filter-label">Overall Tier</div>
+          <div className="tier-btn-group">
+            <button
+              className={overallTier === 'Any' ? 'tier-btn active' : 'tier-btn'}
+              onClick={() => setOverallTier('Any')}
+            >Any</button>
+            {TIER_OPTIONS.map(tier => (
+              <button
+                key={tier}
+                className={overallTier === tier ? 'tier-btn active' : 'tier-btn'}
+                onClick={() => setOverallTier(tier)}
+              >{tier}</button>
+            ))}
+          </div>
+        </div>
+        <div className="filter-section">
+          <div className="filter-label" >Categories</div>
+          {CATEGORY_FILTERS.map(cat => (
+            <div key={cat.key} className="category-row">
+              <span className="category-label">{cat.label}</span>
+              <div className="tier-btn-group">
+                <button
+                  className={categoryTiers[cat.key] === 'Any' ? 'tier-btn active' : 'tier-btn'}
+                  onClick={() => handleCategoryTier(cat.key, 'Any')}
+                >Any</button>
+                {TIER_OPTIONS.map(tier => (
+                  <button
+                    key={tier}
+                    className={categoryTiers[cat.key] === tier ? 'tier-btn active' : 'tier-btn'}
+                    onClick={() => handleCategoryTier(cat.key, tier)}
+                  >{tier}</button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
+        <a href="#" className="ratings-guide-link">See Ratings Guide</a>
       </div>
-      <button className="filter-btn" type="submit">
-        <i className="fas fa-search"></i> Search
-      </button>
-    </form>
+    </>
   );
 }
 

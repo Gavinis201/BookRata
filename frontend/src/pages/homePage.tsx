@@ -7,8 +7,8 @@ function HomePage() {
     
     return(
         <div className="home-container">
-            <div className="filter-container">
-                <h5>Book Filters</h5>
+            <div className="sidebar-container">
+                
                 <BookFilters />
             </div>
             <div className="books-container">

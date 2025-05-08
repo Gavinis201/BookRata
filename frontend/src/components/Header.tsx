@@ -1,11 +1,39 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Header.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const location = useLocation();
   const isHome = location.pathname === "/home";
   const isLanding = location.pathname === "/";
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<number | undefined>(undefined);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = window.setTimeout(() => {
+      setIsDropdownOpen(false);
+    }, 100); // 300ms delay before closing
+  };
 
   if (isHome) {
     return (
@@ -22,8 +50,43 @@ const Header = () => {
           </form>
         </div>
         <div className="header-right">
-          <span className="header-username">Your Name</span>
-          <i className="fas fa-user-circle header-user-icon"></i>
+          <span className="header-username">Welcome, Gavin</span>
+          <div 
+            className="user-dropdown-container"
+            ref={dropdownRef}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <i className="fas fa-user-circle header-user-icon"></i>
+            <div className={`user-dropdown-menu ${isDropdownOpen ? 'show' : ''}`}>
+              <div className="dropdown-item">
+                <i className="fas fa-user"></i>
+                <span className="ms-2">Account</span>
+              </div>
+              <div className="dropdown-item">
+                <i className="fas fa-info-circle"></i>
+                <span className="ms-2">Help Center</span>
+              </div>
+              <div className="dropdown-item">
+                <i className="fas fa-clipboard-list"></i>
+                <span className="ms-2">Rating Guide</span>
+              </div>
+              <div className="dropdown-item">
+                <i className="fas fa-question-circle"></i>
+                <span className="ms-2">Request Book Rating</span>
+              </div>
+              <div className="dropdown-item">
+                <i className="fas fa-dollar-sign"></i>
+                <span className="ms-2">Donate</span>
+              </div>
+              <div className="dropdown-item logout" onClick={() => {
+                
+                navigate("/");
+              }}>
+                <span className="dropdown-center" >Sign Out of BookRata</span>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
     );

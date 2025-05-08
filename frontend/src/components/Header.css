@@ -31,7 +31,6 @@
 .header-search-form {
   display: flex;
   align-items: center;
-  margin-left: 10em;
 }
 
 .header-search-input {
@@ -75,6 +74,12 @@
 .header-user-icon {
   font-size: 2rem;
   color: #0A453B;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.header-user-icon:hover {
+  color: #0e5349;
 }
 
 .logo-img {
@@ -158,4 +163,100 @@
   background: var(--Tier-2);
   border-radius: 0 4px 4px 0;
   width: 50px;
+}
+
+.user-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 2.2em;
+  right: 0;
+  background: #fff;
+  min-width: 220px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
+  border-radius: 3px;
+  z-index: 100;
+  padding: 0.5em .6em;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  font-size: .9em;
+  background-color: var(--Primary);
+  border-radius: 4px;
+  color: var(--BookRataNew-color);
+  pointer-events: none; /* This prevents the menu from capturing hover events */
+}
+
+.user-dropdown-container:hover .user-dropdown-menu,
+.user-dropdown-container:focus-within .user-dropdown-menu,
+.user-dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto; /* Re-enable pointer events when menu is visible */
+}
+
+.dropdown-item {
+  color: #0A453B;
+  font-size: .9em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 0.5em 0.8em;
+  border-radius: 4px;
+}
+
+.dropdown-item i {
+  width: 1.2em;
+  text-align: center;
+  font-size: .9em;
+  color: var(--BookRataNew-color);
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(10, 69, 59, 0.05);
+  color: #0e5349;
+  text-decoration: underline;
+}
+
+.dropdown-item:hover i {
+  opacity: 1;
+}
+
+.dropdown-item.logout {
+  color: var(--BookRataNew-color);
+  margin-top: 0.3em;
+  border-top: 1px solid rgba(10, 69, 59, 0.1);
+  
+}
+
+.dropdown-item.logout:hover {
+  color: #052d27;
+  text-decoration: underline;
+}
+
+hr {
+  margin: 0.5em 0;
+  border: none;
+  border-top: 1px solid rgba(10, 69, 59, 0.1);
+}
+
+.dropdown-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .5em;
+  font-size: .9em;
+  transition: color 0.2s ease;
 }

@@ -14,41 +14,36 @@
 .home-container{
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: flex-start;
     background-color: var(--Primary);
     gap: 20px;
     min-height: 100vh;
 }
-.filter-container{
+.sidebar-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     background-color: var(--FilterSidebar);
-    height: 100vh;
     width: 15%;
     min-width: 180px;
     box-sizing: border-box;
     padding: 1.5em 1em 1.5em 1em;
-    position: sticky;
-    top: 0;
-    overflow-y: auto;
 }
-.filter-container h5{
-    margin-top: 1em;
-}
+
+
+
 .books-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     gap: 20px;
     background-color: var(--Primary);
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 0rem 2rem 2rem 2rem;
     box-sizing: border-box;
 }
 

@@ -15,7 +15,7 @@
 }
 
 .tier-heading {
-  margin:  1rem 1rem 0.5rem;
+  margin:  1em 0 1em 0;
   color: #0A453B;
   font-size: 1.75rem;
   font-weight: 600;
@@ -23,21 +23,33 @@
 
 .book-grid {
   display: flex;
+  justify-content: flex-start;
+  max-width: 100%;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: .6rem;
 }
 
 .book-card {
-  background: #fff;
-  border-radius: 8px;
+  background: white;
+  border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  width: 160px;
-  height: 250px;
-  padding: 0.7em 0.7em 1em 0.7em;
+  width: 9em;
+  height: 240px;
+  padding: 0.5em .1em .5em .1em;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  cursor: pointer;
+}
+.book-card a{
+  margin-top: auto;
+  font-size: 10px;
+  color: var(--BookRataNew-color);
+}
+.book-card a:hover{
+  text-decoration: underline;
+  color: var(--BookRataNew-color);
 }
 
 .tier-badge {
@@ -50,6 +62,7 @@
   border-radius:  0 0 4px 0;
   padding: 0.2em 0.7em;
   z-index: 2;
+  cursor: default;
 }
 
 .book-cover {
@@ -62,15 +75,14 @@
 }
 
 .book-title {
-  font-weight: 600;
-  font-size: .8em;
+  font-weight: 700;
+  font-size: .7em;
   margin-bottom: 0.2em;
   text-align: center;
 }
 
 .book-author {
-  font-size: 0.95em;
+  font-size: 0.7em;
   color: #555;
   text-align: center;
-  margin-top: auto;
 } 
