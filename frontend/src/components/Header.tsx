@@ -179,71 +179,29 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
           </div>
           <div className="header-right">
             <span className="header-username">Welcome, Gavin</span>
-            <div
-              className="user-dropdown-container"
-              ref={dropdownRef}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <i className="fas fa-user-circle header-user-icon"></i>
-              <div className={`user-dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
-                <div className="dropdown-item">
-                  <i className="fas fa-user"></i>
-                  <span className="ms-2">Account</span>
-                </div>
-                <div className="dropdown-item">
-                  <i className="fas fa-info-circle"></i>
-                  <span className="ms-2">Help Center</span>
-                </div>
-                <div className="dropdown-item">
-                  <i className="fas fa-clipboard-list"></i>
-                  <span className="ms-2">Rating Guide</span>
-                </div>
-                <div className="dropdown-item">
-                  <i className="fas fa-question-circle"></i>
-                  <span className="ms-2">Request Book Rating</span>
-                </div>
-                <div className="dropdown-item">
-                  <i className="fas fa-dollar-sign"></i>
-                  <span className="ms-2">Donate</span>
-                </div>
-                <div
-                  className="dropdown-item logout"
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  <span className="dropdown-center">Sign Out of BookRata</span>
-                </div>
-              </div>
-            </div>
           </div>
         </header>
       </>
     );
   }
 
-  if (isAuthPage) {
-    return (
-      <header className="header">
-        <div className="header-left">
-          <a href="/">
-            <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-img" />
-          </a>
-        </div>
-        <div className="header-right">
-          <button className="sign-in" onClick={() => navigate("/login")}>
-            Sign In
-          </button>
-          <button className="get-started" onClick={() => navigate("/create-account")}>
-            Get Started
-          </button>
-        </div>
-      </header>
-    );
-  }
-
-  return null;
+  return (
+    <header className="header">
+      <div className="header-left">
+        <a href="/">
+          <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-img" />
+        </a>
+      </div>
+      <div className="header-right">
+        <a href="/login" className="sign-in">
+          Sign in
+        </a>
+        <a href="/create-account" className="get-started">
+          Get Started
+        </a>
+      </div>
+    </header>
+  );
 };
 
 export default Header;
