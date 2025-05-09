@@ -16,11 +16,11 @@ export interface BookWithRatings {
     lgbtqTier: string;
     lgbtqReasoning: string;
     bookSummary: string;
-    publishDate: string;
+    publishDate: string; 
     tagName?: string[];
-}
-
-export interface Tags {
+  }
+  
+  export interface Tags {
     tagId: number;
     tagName: string;
-}
+  }

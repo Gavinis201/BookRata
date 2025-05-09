@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import './BookFilters.css'; // Assuming you have a CSS file for styling
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const TIER_OPTIONS = [1, 2, 3, 4, 5];
 
@@ -23,6 +25,8 @@ function BookFilters({ onAuthorSearch, onTagFilter }: BookFiltersProps) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchAuthor, setSearchAuthor] = useState('');
   const [availableTags, setAvailableTags] = useState<string[]>([]);
+  const [availableAuthors, setAvailableAuthors] = useState<string[]>([]);
+  const [showAuthorDropdown, setShowAuthorDropdown] = useState(false);
 
   const [overallTier, setOverallTier] = useState<'Any' | number>('Any');
   const [categoryTiers, setCategoryTiers] = useState<Record<string, 'Any' | number>>({
@@ -33,6 +37,22 @@ function BookFilters({ onAuthorSearch, onTagFilter }: BookFiltersProps) {
     lgbtq: 'Any',
     religion: 'Any',
   });
+
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const response = await fetch('https://localhost:5000/Book/BookAuthors');
+        if (!response.ok) throw new Error('Failed to fetch authors');
+        const data = await response.json();
+        console.log('Fetched authors:', data);
+        setAvailableAuthors(data);
+      } catch (error) {
+        console.error('Error fetching authors:', error);
+      }
+    };
+
+    fetchAuthors();
+  }, []);
 
   useEffect(() => {
     const fetchTags = async () => {
@@ -52,13 +72,26 @@ function BookFilters({ onAuthorSearch, onTagFilter }: BookFiltersProps) {
   // Filter tags based on input and not already selected
   const filteredTags = availableTags.filter(
     tag =>
-      tag.toLowerCase().includes(tagInput.toLowerCase()) &&
+      (tagInput === '' || tag.toLowerCase().includes(tagInput.toLowerCase())) &&
       !selectedTags.includes(tag)
+  );
+
+  // Filter authors based on input
+  const filteredAuthors = availableAuthors.filter(
+    author => author.toLowerCase().includes(searchAuthor.toLowerCase())
   );
 
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTagInput(e.target.value);
-    setShowDropdown(!!e.target.value);
+    setShowDropdown(true);
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab' && filteredTags.length > 0) {
+      e.preventDefault(); // Prevent default tab behavior
+      const firstTag = filteredTags[0];
+      handleTagSelect(firstTag);
+    }
   };
 
   const handleTagSelect = (tag: string) => {
@@ -84,20 +117,70 @@ function BookFilters({ onAuthorSearch, onTagFilter }: BookFiltersProps) {
   const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchAuthor(value);
-    onAuthorSearch(value);
+    setShowAuthorDropdown(true);
+    // Reset book list when search is empty
+    if (value === '') {
+      onAuthorSearch('');
+    }
+  };
+
+  const handleAuthorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Tab' && filteredAuthors.length > 0) {
+      e.preventDefault(); // Prevent default tab behavior
+      const firstAuthor = filteredAuthors[0];
+      setSearchAuthor(firstAuthor);
+      onAuthorSearch(firstAuthor);
+      setShowAuthorDropdown(false);
+    }
+  };
+
+  const handleAuthorSelect = (author: string) => {
+    setSearchAuthor(author);
+    onAuthorSearch(author);
+    setShowAuthorDropdown(false);
+  };
+
+  const handleClearAuthor = () => {
+    setSearchAuthor('');
+    onAuthorSearch('');
   };
 
   return (
     <>
       <form className="book-filters-form" onSubmit={(e) => e.preventDefault()}>
         <p className='filter-label'>Advanced Filter</p>
-        <input 
-          className="filter-input" 
-          type="text" 
-          placeholder="Author" 
-          value={searchAuthor}
-          onChange={handleAuthorChange}
-        />
+        <div className="author-autocomplete-wrapper">
+          <div className="input-with-clear">
+            <input 
+              className="filter-input" 
+              type="text" 
+              placeholder="Search by author..." 
+              value={searchAuthor}
+              onChange={handleAuthorChange}
+              onKeyDown={handleAuthorKeyDown}
+              onFocus={() => setShowAuthorDropdown(true)}
+              onBlur={() => setTimeout(() => setShowAuthorDropdown(false), 150)}
+            />
+            {searchAuthor && (
+              <button 
+                className="clear-button" 
+                onClick={handleClearAuthor}
+                type="button"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            )}
+          </div>
+          {showAuthorDropdown && filteredAuthors.length > 0 && (
+            <ul className="author-dropdown">
+              {filteredAuthors.map(author => (
+                <li key={author} onClick={() => handleAuthorSelect(author)}>
+                  {author}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <div className="tag-autocomplete-wrapper">
           <input
             className="filter-input"
@@ -105,7 +188,8 @@ function BookFilters({ onAuthorSearch, onTagFilter }: BookFiltersProps) {
             placeholder="Search tags"
             value={tagInput}
             onChange={handleTagInputChange}
-            onFocus={() => setShowDropdown(!!tagInput)}
+            onKeyDown={handleTagKeyDown}
+            onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
           />
           {showDropdown && filteredTags.length > 0 && (

@@ -12,6 +12,7 @@
 }
 
 .home-container{
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -19,6 +20,16 @@
     background-color: var(--Primary);
     gap: 20px;
     min-height: 100vh;
+}
+
+.home-dark-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* semi-transparent black */
+    z-index: 10; /* should be above the page content but below header */
 }
 .sidebar-container {
     display: flex;

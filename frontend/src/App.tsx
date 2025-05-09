@@ -13,18 +13,26 @@ import BookDetailsPage from './pages/bookDetailsPage';
 
 function App() {
   const [searchBook, setSearchBook] = useState('');
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
 
   return (
     <Router>
-      <Header onSearch={setSearchBook}/>
+      <Header
+        onSearch={setSearchBook}
+        isSearchActive={showSearchDropdown}
+        setIsSearchActive={setShowSearchDropdown}
+      />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="/choose-plan" element={<ChoosePlanPage />} />
-        <Route path="/home" element={<HomePage searchTerm={searchBook} />} />
-        <Route path="/book-details/:id" element={<BookDetailsPage/>} />
+        <Route
+          path="/home"
+          element={<HomePage searchTerm={searchBook} isSearchActive={showSearchDropdown} />}
+        />
+        <Route path="/book-details/:id" element={<BookDetailsPage />} />
       </Routes>
       <Footer />
     </Router>

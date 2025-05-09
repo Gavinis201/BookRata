@@ -92,7 +92,30 @@ public IActionResult GetBooksWithJoinedRatings([FromQuery] string? title, [FromQ
             .Select(t => new { t.TagId, t.TagName })
             .ToList();
         return Ok(tags);
-    } 
+    }
 
+    
+    [HttpGet("BookTitles")]
+    public IActionResult GetBookTitles()
+    {
+        var titles = _context.Books;
+        return Ok(titles);
+    }
+    
+    [HttpGet("BookAuthors")]
+    public IActionResult GetBookAuthors()
+    {
+        var distinctAuthors = _context.Books
+            .Select(b => b.Author)
+            .Distinct()
+            .ToList();
+        return Ok(distinctAuthors);
+
+    }
+
+    
+    
+    
+    
     }
 }
