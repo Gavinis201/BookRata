@@ -3,18 +3,21 @@ import './homePage.css'; // Assuming you have a CSS file for styling
 import BookFilters from '../components/BookFilters';
 import BookList from '../components/bookList';
 
-function HomePage() {
-    
+interface HomePageProps {
+    searchTerm: string;
+    searchAuthor: string;
+    onAuthorSearch: (author: string) => void;
+}
+
+function HomePage({ searchTerm, searchAuthor, onAuthorSearch }: HomePageProps) {
     return(
         <div className="home-container">
             <div className="sidebar-container">
-                
-                <BookFilters />
+                <BookFilters onAuthorSearch={onAuthorSearch} />
             </div>
             <div className="books-container">
-            <BookList />
+                <BookList searchTitle={searchTerm} searchAuthor={searchAuthor}/>
             </div>
-            
         </div>
     )
 }

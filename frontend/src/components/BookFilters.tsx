@@ -15,10 +15,15 @@ const CATEGORY_FILTERS = [
   { key: 'religion', label: 'Religion' },
 ];
 
-function BookFilters() {
+interface BookFiltersProps {
+  onAuthorSearch: (author: string) => void;
+}
+
+function BookFilters({ onAuthorSearch }: BookFiltersProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchAuthor, setSearchAuthor] = useState('');
 
   const [overallTier, setOverallTier] = useState<'Any' | number>('Any');
   const [categoryTiers, setCategoryTiers] = useState<Record<string, 'Any' | number>>({
@@ -58,11 +63,23 @@ function BookFilters() {
     setCategoryTiers(prev => ({ ...prev, [cat]: value }));
   };
 
+  const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchAuthor(value);
+    onAuthorSearch(value);
+  };
+
   return (
     <>
-      <form className="book-filters-form" autoComplete="off">
+      <form className="book-filters-form" >
         <p className='filter-label'>Advanced Filter</p>
-        <input className="filter-input" type="text" placeholder="Author" />
+        <input 
+          className="filter-input" 
+          type="text" 
+          placeholder="Author" 
+          value={searchAuthor}
+          onChange={handleAuthorChange}
+        />
         <div className="tag-autocomplete-wrapper">
           <input
             className="filter-input"

@@ -37,6 +37,9 @@ public partial class BookRataDBContext : DbContext
 
     public virtual DbSet<ViolenceRating> ViolenceRatings { get; set; }
 
+    public virtual DbSet<BookTags> BookTags { get; set; }
+    
+    public virtual DbSet<Tags> Tags { get; set; }
     
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -219,6 +222,31 @@ public partial class BookRataDBContext : DbContext
             entity.HasOne(d => d.Book).WithMany(p => p.ViolenceRatings)
                 .HasForeignKey(d => d.BookId)
                 .HasConstraintName("violenceratings_ibfk_1");
+        });
+
+        modelBuilder.Entity<BookTags>(entity =>
+        {
+            entity.HasKey(e => new { e.BookId, e.TagId }).HasName("PRIMARY");
+
+            entity.HasIndex(e => e.BookId, "BookId");
+            entity.HasIndex(e => e.TagId, "TagId");
+
+            entity.HasOne(d => d.Book)
+                .WithMany()
+                .HasForeignKey(d => d.BookId)
+                .HasConstraintName("booktags_ibfk_1");
+
+            entity.HasOne(d => d.Tag)
+                .WithMany()
+                .HasForeignKey(d => d.TagId)
+                .HasConstraintName("booktags_ibfk_2");
+        });
+
+        modelBuilder.Entity<Tags>(entity =>
+        {
+            entity.HasKey(e => e.TagId).HasName("PRIMARY");
+
+            entity.Property(e => e.TagName).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
