@@ -21,7 +21,7 @@ function groupByTier(books: BookWithRatings[]) {
   }, {} as Record<string, BookWithRatings[]>);
 }
 
-const BookList = ({ searchTitle, searchAuthor }: { searchTitle: string; searchAuthor: string }) => {
+  const BookList = ({ searchTitle, searchAuthor }: { searchTitle: string; searchAuthor: string }) => {
   const [books, setBooks] = useState<BookWithRatings[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -30,11 +30,7 @@ const BookList = ({ searchTitle, searchAuthor }: { searchTitle: string; searchAu
       const fetchBooks = async () => {
           try {
               setLoading(true);
-              const query = new URLSearchParams();
-              if (searchTitle) query.append('title', searchTitle);
-              if (searchAuthor) query.append('author', searchAuthor);
-
-              const response = await fetch(`https://localhost:5000/Book/JoinedRatings?${query.toString()}`);
+              const response = await fetch(`https://localhost:5000/Book/JoinedRatings?title=${searchTitle}&author=${searchAuthor}`);
               if (!response.ok) throw new Error("Network response was not ok");
 
               const data = await response.json();
