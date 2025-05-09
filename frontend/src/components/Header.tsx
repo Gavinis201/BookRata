@@ -12,41 +12,28 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchActive }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState<BookWithRatings[]>([]);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const authPages = ["/", "/login", "/create-account", "/choose-account"];
   const isAuthPage = authPages.includes(location.pathname);
   const isUserPage = location.pathname.startsWith("/book-details") || location.pathname === "/home";
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<number | undefined>(undefined);
-  const [searchInput, setSearchInput] = useState("");
-  const [bookTitles, setBookTitles] = useState<{ bookId: number; title: string }[]>([]);
-  const [searchResults, setSearchResults] = useState<BookWithRatings[]>([]);
-
   useEffect(() => {
-    const fetchBookTitles = async () => {
-      try {
-        const response = await fetch("https://localhost:5000/Book/BookTitles");
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-        setBookTitles(data);
-      } catch (error) {
-        console.error("Error fetching book titles:", error);
-      }
-    };
-
-    fetchBookTitles();
-
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchFocused(false);
+        if (searchInput === '') {
+          setIsSearchActive(false);
+        }
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [searchInput, setIsSearchActive]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +47,8 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchInput(value);
-    setIsSearchActive(value.length > 0);
+    setIsSearchActive(true);
+    fetchSearchResults(value);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -74,58 +62,58 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
     }
   };
 
-  useEffect(() => {
-    const fetchSearchResults = async () => {
-      if (searchInput.trim().length === 0) {
-        setSearchResults([]);
-        return;
-      }
-
-      try {
-        const response = await fetch(`https://localhost:5000/Book/JoinedRatings?title=${encodeURIComponent(searchInput)}`);
-        if (!response.ok) throw new Error("Failed to fetch search results");
-        const data = await response.json();
-        setSearchResults(data);
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-      }
-    };
-
-    const debounceTimer = setTimeout(fetchSearchResults, 300);
-    return () => clearTimeout(debounceTimer);
-  }, [searchInput]);
-
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      window.clearTimeout(timeoutRef.current);
+  const fetchSearchResults = async (searchTerm: string) => {
+    try {
+      const response = await fetch(`https://localhost:5000/Book/JoinedRatings?title=${encodeURIComponent(searchTerm)}`);
+      if (!response.ok) throw new Error("Failed to fetch search results");
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
     }
-    setIsDropdownOpen(true);
   };
 
-  const handleMouseLeave = () => {
-    timeoutRef.current = window.setTimeout(() => {
-      setIsDropdownOpen(false);
-    }, 100);
+  const handleSearchFocus = () => {
+    setIsSearchFocused(true);
+    setIsSearchActive(true);
+    fetchSearchResults('');
+  };
+
+  const handleSearchBlur = () => {
+    // Don't immediately hide results to allow clicking on them
+    setTimeout(() => {
+      if (!searchRef.current?.contains(document.activeElement)) {
+        setIsSearchFocused(false);
+        if (searchInput === '') {
+          setIsSearchActive(false);
+        }
+      }
+    }, 200);
   };
 
   const handleBookSelect = (book: BookWithRatings) => {
     setSearchInput("");
     setIsSearchActive(false);
+    setIsSearchFocused(false);
+    setSearchResults([]);
     navigate(`/book-details/${book.bookId}`, { state: { book } });
+  };
+
+  const handleOverlayClick = () => {
+    setSearchInput("");
+    setIsSearchActive(false);
+    setIsSearchFocused(false);
+    setSearchResults([]);
   };
 
   if (isUserPage) {
     return (
       <>
-        {isSearchActive && (
-          <div
-            className="screen-overlay"
-            onClick={() => {
-              setIsSearchActive(false);
-              setSearchInput("");
-              setSearchResults([]);
-            }}
-          ></div>
+        {isSearchFocused && (
+          <div 
+            className="search-overlay"
+            onClick={handleOverlayClick}
+          />
         )}
         <header className="header">
           <div className="header-left">
@@ -133,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
               <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-img" />
             </a>
           </div>
-          <div className="header-center" style={{ position: "relative" }}>
+          <div className="header-center" ref={searchRef}>
             <form className="header-search-form" onSubmit={handleSubmit}>
               <input
                 className="header-search-input"
@@ -142,18 +130,13 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
                 value={searchInput}
                 onChange={handleSearchChange}
                 onKeyPress={handleKeyPress}
-                onFocus={() => setIsSearchActive(true)}
+                onFocus={handleSearchFocus}
+                onBlur={handleSearchBlur}
               />
               {searchInput !== "" && (
                 <i
                   className="fas fa-times clear-search-icon"
-                  onClick={() => {
-                    setSearchInput("");
-                    setIsSearchActive(false);
-                    setSearchResults([]);
-                    onSearch("");
-                    navigate("/home");
-                  }}
+                  onClick={handleOverlayClick}
                 />
               )}
               <button className="header-search-btn" type="submit">
