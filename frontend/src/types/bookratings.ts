@@ -24,3 +24,4 @@ export interface BookWithRatings {
     tagId: number;
     tagName: string;
   }
+  

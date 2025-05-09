@@ -1,3 +1,16 @@
+:root{
+  --BookRataNew-color: #0A453B;
+  --BookRataNew-buttonHover: #0e5349;
+  --Primary: #F9FAF5;
+  --Sidebar:#E5E6DF;
+  --Navbar: #D3D9D1;
+  --Tier-5: black;
+  --Tier-4: #F44336;  
+  --Tier-3: #F4A623;
+  --Tier-2: #FFF176;
+  --Tier-1: #2E7D32;
+}
+
 .book-filters-form {
   display: flex;
   align-items: center;
@@ -65,7 +78,7 @@
 
 .tag-dropdown {
   position: absolute;
-  top: 100%;
+  top: 72%;
   left: 0;
   right: 0;
   background: #fff;
@@ -97,7 +110,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5em;
-  margin-top: .7em;
+  margin-top: 0.5em;
   margin-bottom: 0.2em;
 }
 
@@ -259,7 +272,7 @@
 
 .author-dropdown {
   position: absolute;
-  top: 100%;
+  top: 105%;
   left: 0;
   right: 0;
   background: #fff;

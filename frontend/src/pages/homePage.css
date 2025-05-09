@@ -1,14 +1,14 @@
 :root{
-    --BookRataNew-color: #0A453B;
-    --BookRataNew-buttonHover: #0e5349;
-    --Primary: #FAF8F5;
-    --Navbar: #d6d8cb;
-    --Tier-5: black;
-    --Tier-4: #F44336;  
-    --Tier-3: #F4A623;
-    --Tier-2: #FFF176;
-    --Tier-1: #2E7D32;
-    --FilterSidebar: #E5E6DF;
+  --BookRataNew-color: #0A453B;
+  --BookRataNew-buttonHover: #0e5349;
+  --Primary: #F9FAF5;
+  --Sidebar:#E5E6DF;
+  --Navbar: #D3D9D1;
+  --Tier-5: black;
+  --Tier-4: #F44336;  
+  --Tier-3: #F4A623;
+  --Tier-2: #FFF176;
+  --Tier-1: #2E7D32;
 }
 
 .home-container{
@@ -36,7 +36,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    background-color: var(--FilterSidebar);
+    background-color: var(--Sidebar);
     width: 15%;
     min-width: 180px;
     box-sizing: border-box;

@@ -87,8 +87,12 @@
   color: #0e5349;
 }
 
-.logo-img {
-  height: 30px;
+.logo-imgs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: .5em;
+  height: 35px;
   width: auto;
   display: block;
 }
@@ -196,7 +200,7 @@
   background-color: var(--Primary);
   border-radius: 4px;
   color: var(--BookRataNew-color);
-  pointer-events: none; /* This prevents the menu from capturing hover events */
+  pointer-events: none; /* Prevent hover/click when hidden */
 }
 
 .user-dropdown-container:hover .user-dropdown-menu,
@@ -205,7 +209,7 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-  pointer-events: auto; /* Re-enable pointer events when menu is visible */
+  pointer-events: auto; /* Enable interaction when visible */
 }
 
 .dropdown-item {

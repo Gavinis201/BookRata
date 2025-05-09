@@ -41,6 +41,10 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [searchInput, setIsSearchActive]);
 
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [location.pathname]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchInput.trim() === "") {
@@ -122,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
         <header className="header">
           <div className="header-left">
             <a href="/home">
-              <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-img" />
+              <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-imgs" />
             </a>
           </div>
           <div className="header-center" ref={searchRef}>
@@ -209,7 +213,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, isSearchActive, setIsSearchAc
     <header className="header">
       <div className="header-left">
         <a href="/">
-          <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-img" />
+          <img src="/bookRataLogo.png" alt="BookRata Logo" className="logo-imgs" />
         </a>
       </div>
       <div className="header-right">
