@@ -2,91 +2,97 @@ using BookRata.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookRata.Controllers;
-
-[Route("[controller]")]
-[ApiController]
-public class BookController : ControllerBase
+namespace BookRata.Controllers
 {
-    private readonly BookRataDBContext _context;
-
-    public BookController(BookRataDBContext temp)
+    [Route("[controller]")]
+    [ApiController]
+    public class BookController : ControllerBase
     {
-        _context = temp;
-    }
-[HttpGet("JoinedRatings")]
-public IActionResult GetBooksWithJoinedRatings([FromQuery] string? title, [FromQuery] string? author)
-{
-    var query = (from b in _context.Books
-                 join bs in _context.BookSynopses on b.BookId equals bs.BookId into bsJoin
-                 from bs in bsJoin.DefaultIfEmpty()
-                 join lr in _context.LanguageRatings on b.BookId equals lr.BookId into lrJoin
-                 from lr in lrJoin.DefaultIfEmpty()
-                 join sr in _context.SexRatings on b.BookId equals sr.BookId into srJoin
-                 from sr in srJoin.DefaultIfEmpty()
-                 join vr in _context.ViolenceRatings on b.BookId equals vr.BookId into vrJoin
-                 from vr in vrJoin.DefaultIfEmpty()
-                 join hr in _context.HealthRatings on b.BookId equals hr.BookId into hrJoin
-                 from hr in hrJoin.DefaultIfEmpty()
-                 join rr in _context.ReligionRatings on b.BookId equals rr.BookId into rrJoin
-                 from rr in rrJoin.DefaultIfEmpty()
-                 join lgbt in _context.LGBTQRatings on b.BookId equals lgbt.BookId into lgbtJoin
-                 from lgbt in lgbtJoin.DefaultIfEmpty()
-                 select new BookWithRatingsDto
-                 {
-                     BookId = b.BookId,
-                     Title = b.Title,
-                     Author = b.Author,
-                     ISBN = b.ISBN,
-                     TextUrl = b.TextUrl,
-                     BookSummary = b.BookSummary,
-                     OverallTier = b.OverallTier,
-                     ReviewDate = b.ReviewDate,
-                     PublishDate = b.PublishDate,
-                     OverallSynopsis = bs.OverallSynopsis,
-                     LanguageTier = lr.TierRating,
-                     LanguageReasoning = lr.LanguageReasoning,
-                     SexTier = sr.TierRating,
-                     SexReasoning = sr.SexReasoning,
-                     ViolenceTier = vr.TierRating,
-                     ViolenceReasoning = vr.ViolenceReasoning,
-                     HealthTier = hr.TierRating,
-                     HealthReasoning = hr.HealthReasoning,
-                     ReligionTier = rr.TierRating,
-                     ReligionReasoning = rr.ReligionReasoning,
-                     LGBTQTier = lgbt.TierRating,
-                     LGBTQReasoning = lgbt.LGBTQReasoning
-                 });
+        private readonly BookRataDBContext _context;
 
-    // ✅ Filter by title if provided
+        public BookController(BookRataDBContext temp)
+        {
+            _context = temp;
+        }
+[HttpGet("JoinedRatings")]
+public IActionResult GetBooksWithJoinedRatings([FromQuery] string? title, [FromQuery] string? author, [FromQuery] List<string>? tags)
+{
+    var booksQuery = _context.Books
+        .Include(b => b.BookSynopses)
+        .Include(b => b.LanguageRatings)
+        .Include(b => b.SexRatings)
+        .Include(b => b.ViolenceRatings)
+        .Include(b => b.HealthRatings)
+        .Include(b => b.ReligionRatings)
+        .Include(b => b.LGBTQRatings)
+        .Include(b => b.BookTags)
+            .ThenInclude(bt => bt.Tag)
+        .AsQueryable();
+
     if (!string.IsNullOrEmpty(title))
     {
-        query = query.Where(b => b.Title.Contains(title));
+        booksQuery = booksQuery.Where(b => b.Title.Contains(title));
     }
 
-    // ✅ Filter by author if provided
     if (!string.IsNullOrEmpty(author))
     {
-        query = query.Where(b => b.Author != null && b.Author.Contains(author));
+        booksQuery = booksQuery.Where(b => b.Author != null && b.Author.Contains(author));
     }
 
-    var booksWithRatings = query.ToList();
+    if (tags != null && tags.Any())
+    {
+        var loweredTags = tags.Select(t => t.ToLower()).ToList();
+        booksQuery = booksQuery.Where(b => b.BookTags.Any(bt => loweredTags.Contains(bt.Tag.TagName.ToLower())));
+    }
+
+
+    var booksWithRatings = booksQuery.Select(b => new BookWithRatingsDto
+    {
+        BookId = b.BookId,
+        Title = b.Title,
+        Author = b.Author,
+        ISBN = b.ISBN,
+        TextUrl = b.TextUrl,
+        BookSummary = b.BookSummary,
+        OverallTier = b.OverallTier,
+        ReviewDate = b.ReviewDate,
+        PublishDate = b.PublishDate,
+
+        OverallSynopsis = b.BookSynopses.FirstOrDefault().OverallSynopsis,
+
+        LanguageTier = b.LanguageRatings.FirstOrDefault().TierRating,
+        LanguageReasoning = b.LanguageRatings.FirstOrDefault().LanguageReasoning,
+
+        SexTier = b.SexRatings.FirstOrDefault().TierRating,
+        SexReasoning = b.SexRatings.FirstOrDefault().SexReasoning,
+
+        ViolenceTier = b.ViolenceRatings.FirstOrDefault().TierRating,
+        ViolenceReasoning = b.ViolenceRatings.FirstOrDefault().ViolenceReasoning,
+
+        HealthTier = b.HealthRatings.FirstOrDefault().TierRating,
+        HealthReasoning = b.HealthRatings.FirstOrDefault().HealthReasoning,
+
+        ReligionTier = b.ReligionRatings.FirstOrDefault().TierRating,
+        ReligionReasoning = b.ReligionRatings.FirstOrDefault().ReligionReasoning,
+
+        LGBTQTier = b.LGBTQRatings.FirstOrDefault().TierRating,
+        LGBTQReasoning = b.LGBTQRatings.FirstOrDefault().LGBTQReasoning,
+
+        TagName = b.BookTags.Select(bt => bt.Tag.TagName).ToList()
+    }).ToList();
 
     return Ok(booksWithRatings);
 }
 
 
+    [HttpGet("Tags")]
+    public IActionResult GetTags()
+    {
+        var tags = _context.Tags
+            .Select(t => new { t.TagId, t.TagName })
+            .ToList();
+        return Ok(tags);
+    } 
 
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

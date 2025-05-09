@@ -1,22 +1,32 @@
-import React from 'react';  
+import React, { useState } from 'react';  
 import './homePage.css'; // Assuming you have a CSS file for styling    
 import BookFilters from '../components/BookFilters';
 import BookList from '../components/bookList';
 
 interface HomePageProps {
     searchTerm: string;
-    searchAuthor: string;
-    onAuthorSearch: (author: string) => void;
 }
 
-function HomePage({ searchTerm, searchAuthor, onAuthorSearch }: HomePageProps) {
+function HomePage({ searchTerm }: HomePageProps) {
+    const [searchAuthor, setSearchAuthor] = useState('');
+    const [searchTags, setSearchTags] = useState<string[]>([]);
+
+    const handleAuthorSearch = (author: string) => {
+        setSearchAuthor(author);
+    };
+    const handleTagFilter = (tags: string[]) => {
+    setSearchTags(tags);
+};
+
+
     return(
         <div className="home-container">
             <div className="sidebar-container">
-                <BookFilters onAuthorSearch={onAuthorSearch} />
+                <BookFilters onAuthorSearch={handleAuthorSearch} onTagFilter={handleTagFilter} />
+
             </div>
             <div className="books-container">
-                <BookList searchTitle={searchTerm} searchAuthor={searchAuthor}/>
+                <BookList searchTitle={searchTerm} searchAuthor={searchAuthor} searchTags={searchTags}/>
             </div>
         </div>
     )

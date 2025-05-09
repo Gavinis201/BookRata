@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BookFilters.css'; // Assuming you have a CSS file for styling
 
-const TAG_OPTIONS = [
-  "Fiction", "Nonfiction", "Mystery", "Romance", "Fantasy", "Biography", "History", "Science", "Children", "Young Adult"
-];
-
 const TIER_OPTIONS = [1, 2, 3, 4, 5];
+
 const CATEGORY_FILTERS = [
   { key: 'language', label: 'Language' },
   { key: 'sexuality', label: 'Sexuality' },
@@ -17,13 +14,15 @@ const CATEGORY_FILTERS = [
 
 interface BookFiltersProps {
   onAuthorSearch: (author: string) => void;
+  onTagFilter: (tags: string[]) => void;
 }
 
-function BookFilters({ onAuthorSearch }: BookFiltersProps) {
+function BookFilters({ onAuthorSearch, onTagFilter }: BookFiltersProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchAuthor, setSearchAuthor] = useState('');
+  const [availableTags, setAvailableTags] = useState<string[]>([]);
 
   const [overallTier, setOverallTier] = useState<'Any' | number>('Any');
   const [categoryTiers, setCategoryTiers] = useState<Record<string, 'Any' | number>>({
@@ -35,8 +34,23 @@ function BookFilters({ onAuthorSearch }: BookFiltersProps) {
     religion: 'Any',
   });
 
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await fetch('https://localhost:5000/Book/Tags');
+        if (!response.ok) throw new Error('Failed to fetch tags');
+        const data = await response.json();
+        setAvailableTags(data.map((tag: { tagName: string }) => tag.tagName));
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
   // Filter tags based on input and not already selected
-  const filteredTags = TAG_OPTIONS.filter(
+  const filteredTags = availableTags.filter(
     tag =>
       tag.toLowerCase().includes(tagInput.toLowerCase()) &&
       !selectedTags.includes(tag)
@@ -49,14 +63,18 @@ function BookFilters({ onAuthorSearch }: BookFiltersProps) {
 
   const handleTagSelect = (tag: string) => {
     if (selectedTags.length < 5) {
-      setSelectedTags([...selectedTags, tag]);
+      const newTags = [...selectedTags, tag];
+      setSelectedTags(newTags);
+      onTagFilter(newTags);
       setTagInput('');
       setShowDropdown(false);
     }
   };
 
   const removeTag = (tag: string) => {
-    setSelectedTags(selectedTags.filter(t => t !== tag));
+    const newTags = selectedTags.filter(t => t !== tag);
+    setSelectedTags(newTags);
+    onTagFilter(newTags);
   };
 
   const handleCategoryTier = (cat: string, value: 'Any' | number) => {
@@ -71,7 +89,7 @@ function BookFilters({ onAuthorSearch }: BookFiltersProps) {
 
   return (
     <>
-      <form className="book-filters-form" >
+      <form className="book-filters-form" onSubmit={(e) => e.preventDefault()}>
         <p className='filter-label'>Advanced Filter</p>
         <input 
           className="filter-input" 
@@ -108,9 +126,6 @@ function BookFilters({ onAuthorSearch }: BookFiltersProps) {
             ))}
           </div>
         </div>
-        <button className="filter-btn d-flex justify-content-center align-items-center" type="submit">
-          <i className="fas fa-search"></i> Search
-        </button>
       </form>
 
       <div className="sidebar-filters">
@@ -131,7 +146,7 @@ function BookFilters({ onAuthorSearch }: BookFiltersProps) {
           </div>
         </div>
         <div className="filter-section">
-          <div className="filter-label" >Categories</div>
+          <div className="filter-label">Categories</div>
           {CATEGORY_FILTERS.map(cat => (
             <div key={cat.key} className="category-row">
               <span className="category-label">{cat.label}</span>

@@ -39,4 +39,6 @@ public partial class Book
     public virtual ICollection<SexRating> SexRatings { get; set; } = new List<SexRating>();
 
     public virtual ICollection<ViolenceRating> ViolenceRatings { get; set; } = new List<ViolenceRating>();
+    
+    public virtual ICollection<BookTags> BookTags { get; set; } = new List<BookTags>();
 }

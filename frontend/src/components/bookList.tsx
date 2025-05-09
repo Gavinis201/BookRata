@@ -21,39 +21,67 @@ function groupByTier(books: BookWithRatings[]) {
   }, {} as Record<string, BookWithRatings[]>);
 }
 
-  const BookList = ({ searchTitle, searchAuthor }: { searchTitle: string; searchAuthor: string }) => {
+  const BookList = ({ 
+    searchTitle, 
+    searchAuthor, 
+    searchTags
+  }:{ 
+    searchTitle: string; 
+    searchAuthor: string;
+    searchTags: string[];
+    
+    }) => {
   const [books, setBooks] = useState<BookWithRatings[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-      const fetchBooks = async () => {
-          try {
-              setLoading(true);
-              const response = await fetch(`https://localhost:5000/Book/JoinedRatings?title=${searchTitle}&author=${searchAuthor}`);
-              if (!response.ok) throw new Error("Network response was not ok");
+ useEffect(() => {
+    const fetchBooks = async () => {
+        try {
+            setLoading(true);
 
-              const data = await response.json();
-              setBooks(data);
-          } catch (error) {
-              console.error("Error fetching books:", error);
-          } finally {
-              setLoading(false);
-          }
-      };
+            const queryParams = new URLSearchParams();
+            if (searchTitle) queryParams.append('title', searchTitle);
+            if (searchAuthor) queryParams.append('author', searchAuthor);
+            if (searchTags && searchTags.length > 0) {
+                searchTags.forEach(tag => queryParams.append('tags', tag));
+            }
 
-      fetchBooks();
-  }, [searchTitle, searchAuthor]);
+            const url = `https://localhost:5000/Book/JoinedRatings?${queryParams.toString()}`;
+            const response = await fetch(url);
+
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const data = await response.json();
+            setBooks(data);
+        } catch (error) {
+            console.error("Error fetching books:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchBooks();
+}, [searchTitle, searchAuthor, searchTags]);
+
 
 
   // Filter books based on search term
   const filteredBooks = books.filter(book => {
-    if (searchTitle) return true; // Show all books if no search term
-    const searchLower = searchTitle.toLowerCase();
-    return (
-      book.title?.toLowerCase().includes(searchLower) ||
-      book.author?.toLowerCase().includes(searchLower)
-    );
+    if (!searchTitle && !searchAuthor && (!searchTags || searchTags.length === 0)) {
+      return true; // Show all books if no filters
+    }
+
+    const matchesTitle = !searchTitle || 
+      book.title?.toLowerCase().includes(searchTitle.toLowerCase());
+    
+    const matchesAuthor = !searchAuthor || 
+      book.author?.toLowerCase().includes(searchAuthor.toLowerCase());
+    
+    const matchesTags = !searchTags || searchTags.length === 0 || 
+      searchTags.every(tag => book.tagName?.includes(tag));
+
+    return matchesTitle && matchesAuthor && matchesTags;
   });
 
   const booksByTier = groupByTier(filteredBooks);
@@ -74,7 +102,7 @@ function groupByTier(books: BookWithRatings[]) {
               {booksByTier[tier].map(book => {
                 const tierStr = book.overallTier != null && book.overallTier !== '' ? String(book.overallTier) : 'Other';
                 return (
-                  <div className="book-card" key={book.bookId} onClick={() => navigate(`/bookDetails/${book.bookId}`)}>
+                  <div className="book-card" key={book.bookId} onClick={() => navigate(`/book-details/${book.bookId}`, {state: { book } })}>
                     <div
                       className="tier-badge"
                       style={{ background: TIER_COLORS[tierStr] || '#888' }}

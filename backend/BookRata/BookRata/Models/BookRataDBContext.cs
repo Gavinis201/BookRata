@@ -232,7 +232,7 @@ public partial class BookRataDBContext : DbContext
             entity.HasIndex(e => e.TagId, "TagId");
 
             entity.HasOne(d => d.Book)
-                .WithMany()
+                .WithMany(p => p.BookTags)
                 .HasForeignKey(d => d.BookId)
                 .HasConstraintName("booktags_ibfk_1");
 

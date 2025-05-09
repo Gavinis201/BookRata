@@ -1,4 +1,3 @@
-
 export interface BookWithRatings {
     bookId: number;
     title: string;
@@ -17,6 +16,11 @@ export interface BookWithRatings {
     lgbtqTier: string;
     lgbtqReasoning: string;
     bookSummary: string;
-    publishDate: string; 
-  }
-  
+    publishDate: string;
+    tagName?: string[];
+}
+
+export interface Tags {
+    tagId: number;
+    tagName: string;
+}
